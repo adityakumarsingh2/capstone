@@ -23,7 +23,7 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:8080', credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:8080' || 'https://fitkartt.vercel.app/', credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
