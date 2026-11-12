@@ -25,7 +25,7 @@ export const useProducts = (category?: string) => {
   return useQuery({
     queryKey: ['products', category],
     queryFn: async () => {
-      const params: Record<string, string> = {};
+      const params: Record<string, string | number> = { limit: 50 };
       if (category && category !== 'All') params.category = category.toLowerCase();
       const { data } = await api.get('/products', { params });
       return data.products as Product[];

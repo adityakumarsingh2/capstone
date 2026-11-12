@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { Filter, X } from "lucide-react";
+import { formatPrice } from "@/lib/formatCurrency";
 
 export interface FilterState {
   sizes: string[];
@@ -48,6 +49,14 @@ const colorSwatches: Record<string, string> = {
   olive: "hsl(80 30% 35%)",
   camel: "hsl(35 45% 55%)",
   khaki: "hsl(45 35% 55%)",
+  emerald: "hsl(152 55% 32%)",
+  "light blue": "hsl(205 70% 78%)",
+  pink: "hsl(340 70% 78%)",
+  "floral pink": "hsl(340 75% 75%)",
+  "floral blue": "hsl(210 70% 70%)",
+  "light wash": "hsl(210 45% 68%)",
+  "dark wash": "hsl(215 45% 28%)",
+  red: "hsl(0 72% 50%)",
 };
 
 const ProductFilters = ({
@@ -101,8 +110,8 @@ const ProductFilters = ({
             className="mb-4"
           />
           <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>${filters.priceRange[0]}</span>
-            <span>${filters.priceRange[1]}</span>
+            <span>{formatPrice(filters.priceRange[0])}</span>
+            <span>{formatPrice(filters.priceRange[1])}</span>
           </div>
         </div>
       </div>
@@ -145,11 +154,11 @@ const ProductFilters = ({
                 onCheckedChange={() => toggleColor(color)}
               />
               <div
-                className="w-5 h-5 rounded-full border border-border"
-                style={{ backgroundColor: colorSwatches[color] || "hsl(var(--muted))" }}
+                className="w-5 h-5 rounded-full border border-border shrink-0"
+                style={{ backgroundColor: colorSwatches[color.toLowerCase()] || color.toLowerCase() }}
               />
-              <span className="text-sm group-hover:text-primary transition-colors">
-                {colorDisplayNames[color] || color}
+              <span className="text-sm group-hover:text-primary transition-colors capitalize">
+                {colorDisplayNames[color.toLowerCase()] || color}
               </span>
             </label>
           ))}

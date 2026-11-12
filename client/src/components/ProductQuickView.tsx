@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/formatCurrency";
+import { getImageUrl } from "@/lib/api";
 
 interface Product {
-  id: string;
+  _id?: string;
+  id?: string;
   name: string;
   brand: string | null;
   price: number;
@@ -35,17 +37,18 @@ const ProductQuickView = ({ product, open, onOpenChange }: ProductQuickViewProps
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
+  const productId = product?._id || product?.id || "";
   const { user } = useAuth();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const { averageRating, reviewCount } = useReviews(product?.id);
+  const { averageRating, reviewCount } = useReviews(productId);
   const navigate = useNavigate();
 
   if (!product) return null;
 
-  const images = product.images?.length ? product.images : [
-    "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800"
-  ];
+  const images = product.images?.length
+    ? product.images.map((img) => getImageUrl(img))
+    : ["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800"];
 
   const handleAddToCart = () => {
     if (!user) {
@@ -58,7 +61,7 @@ const ProductQuickView = ({ product, open, onOpenChange }: ProductQuickViewProps
       return;
     }
     addToCart.mutate({
-      productId: product.id,
+      productId,
       size: selectedSize,
       color: selectedColor,
       quantity,
@@ -75,10 +78,10 @@ const ProductQuickView = ({ product, open, onOpenChange }: ProductQuickViewProps
       navigate('/auth');
       return;
     }
-    await toggleWishlist(product.id);
+    await toggleWishlist(productId);
   };
 
-  const inWishlist = isInWishlist(product.id);
+  const inWishlist = isInWishlist(productId);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
