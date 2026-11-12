@@ -5,10 +5,26 @@ export interface User {
   _id: string;
   email: string;
   fullName?: string;
+  phone?: string;
   avatarUrl?: string;
   role: 'customer' | 'admin';
   isBlocked?: boolean;
-  bodyMeasurements?: { weight?: number; height?: number };
+  bodyMeasurements?: {
+    weight?: number;
+    height?: number;
+    chest?: number;
+    waist?: number;
+    hips?: number;
+    shoulders?: number;
+    inseam?: number;
+    fitPreference?: 'slim' | 'regular' | 'relaxed' | 'oversized';
+  };
+  preferences?: {
+    emailNotifications?: boolean;
+    orderUpdates?: boolean;
+    promotionalEmails?: boolean;
+    measurementUnit?: 'metric' | 'imperial';
+  };
   stylePreferences?: string[];
   addresses?: Address[];
   createdAt?: string;

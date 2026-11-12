@@ -8,16 +8,41 @@ const getProfile = async (req, res) => {
 // PUT /api/profile
 const updateProfile = async (req, res, next) => {
   try {
-    const { fullName, avatarUrl, bodyMeasurements, stylePreferences } = req.body;
+    const { fullName, phone, avatarUrl, bodyMeasurements, stylePreferences, preferences } = req.body;
     const user = await User.findById(req.user._id);
 
     if (fullName !== undefined) user.fullName = fullName;
+    if (phone !== undefined) user.phone = phone;
     if (avatarUrl !== undefined) user.avatarUrl = avatarUrl;
-    if (bodyMeasurements !== undefined) user.bodyMeasurements = bodyMeasurements;
+    if (bodyMeasurements !== undefined) {
+      user.bodyMeasurements = {
+        ...(user.bodyMeasurements?.toObject ? user.bodyMeasurements.toObject() : user.bodyMeasurements || {}),
+        ...bodyMeasurements,
+      };
+    }
     if (stylePreferences !== undefined) user.stylePreferences = stylePreferences;
+    if (preferences !== undefined) {
+      user.preferences = {
+        ...(user.preferences?.toObject ? user.preferences.toObject() : user.preferences || {}),
+        ...preferences,
+      };
+    }
 
     await user.save();
     res.json({ success: true, profile: user.toSafeObject() });
+  } catch (err) { next(err); }
+};
+
+// POST /api/profile/avatar
+const uploadAvatar = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No image file provided' });
+    }
+    const user = await User.findById(req.user._id);
+    user.avatarUrl = `/uploads/${req.file.filename}`;
+    await user.save();
+    res.json({ success: true, avatarUrl: user.avatarUrl, profile: user.toSafeObject() });
   } catch (err) { next(err); }
 };
 
@@ -82,10 +107,14 @@ const deleteAddress = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const address = user.addresses.id(req.params.id);
     if (!address) return res.status(404).json({ success: false, message: 'Address not found' });
+    const wasDefault = address.isDefault;
     address.deleteOne();
+    if (wasDefault && user.addresses.length > 0) {
+      user.addresses[0].isDefault = true;
+    }
     await user.save();
     res.json({ success: true, addresses: user.addresses });
   } catch (err) { next(err); }
 };
 
-module.exports = { getProfile, updateProfile, getAddresses, addAddress, updateAddress, deleteAddress };
+module.exports = { getProfile, updateProfile, uploadAvatar, getAddresses, addAddress, updateAddress, deleteAddress };

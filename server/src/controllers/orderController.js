@@ -13,27 +13,48 @@ const generateOrderNumber = () => {
 // GET /api/orders (customer: own orders; admin: all orders)
 const getOrders = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 20, search, startDate, endDate } = req.query;
+    const { status, page = 1, limit = 20, search, startDate, endDate, sort = 'newest' } = req.query;
     const query = {};
 
     if (req.user.role !== 'admin') {
       query.userId = req.user._id;
     }
 
-    if (status) query.status = status;
-    if (search) query.orderNumber = new RegExp(search, 'i');
+    if (status) {
+      if (status.includes(',')) {
+        query.status = { $in: status.split(',') };
+      } else {
+        query.status = status;
+      }
+    }
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { orderNumber: regex },
+        { 'shippingAddress.fullName': regex },
+        { 'items.productName': regex },
+      ];
+    }
     if (startDate || endDate) {
       query.createdAt = {};
       if (startDate) query.createdAt.$gte = new Date(startDate);
       if (endDate) query.createdAt.$lte = new Date(endDate);
     }
 
+    const sortMap = {
+      newest: { createdAt: -1 },
+      oldest: { createdAt: 1 },
+      amount_desc: { totalAmount: -1 },
+      amount_asc: { totalAmount: 1 },
+    };
+    const sortQuery = sortMap[sort] || sortMap.newest;
+
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
     const skip = (pageNum - 1) * limitNum;
 
     const [orders, total] = await Promise.all([
-      Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limitNum).populate('userId', 'fullName email').lean(),
+      Order.find(query).sort(sortQuery).skip(skip).limit(limitNum).populate('userId', 'fullName email phone').lean(),
       Order.countDocuments(query),
     ]);
 
@@ -211,7 +232,7 @@ const cancelOrder = async (req, res, next) => {
     const order = await Order.findOne({ _id: req.params.id, userId: req.user._id });
     if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
 
-    const cancelableStatuses = ['ORDER_PLACED', 'PROCESSING'];
+    const cancelableStatuses = ['ORDER_PLACED', 'CONFIRMED', 'PROCESSING'];
     if (!cancelableStatuses.includes(order.status)) {
       return res.status(400).json({ success: false, message: 'Order cannot be cancelled at this stage' });
     }
@@ -239,7 +260,8 @@ const cancelOrder = async (req, res, next) => {
 
 const getDefaultMessage = (status) => {
   const messages = {
-    ORDER_PLACED: 'Your order has been placed', PROCESSING: 'Your order is being processed',
+    ORDER_PLACED: 'Your order has been placed', CONFIRMED: 'Your order has been confirmed',
+    PROCESSING: 'Your order is being processed',
     SHIPPED: 'Your order has been shipped', ARRIVED_NEAR_AREA: 'Your order has arrived near your area',
     OUT_FOR_DELIVERY: 'Your order is out for delivery', DELIVERED: 'Your order has been delivered',
     CANCELLED: 'Order has been cancelled', DELIVERY_FAILED: 'Delivery attempt failed',

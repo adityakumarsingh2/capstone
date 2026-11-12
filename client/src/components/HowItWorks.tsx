@@ -1,83 +1,129 @@
-import { Camera, Ruler, Sparkles, Shirt, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Search,
+  Sparkles,
+  ShoppingBag,
+  Truck,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const features = [
+const steps = [
   {
-    icon: Camera,
-    title: "Upload Your Photo",
-    description: "Simply take or upload a full-body photo. Our AI needs just one image to understand your unique proportions.",
     step: "01",
+    icon: Search,
+    title: "Browse & Pick Your Style",
+    subtitle: "Discover curated collections",
+    description:
+      "Explore apparel by category, price, and size. Filter effortlessly to find pieces that match your everyday wardrobe or special occasions.",
+    highlights: ["Smart category & size filters", "Detailed product & fabric views"],
   },
   {
-    icon: Ruler,
-    title: "AI Body Analysis",
-    description: "Advanced machine learning algorithms analyze your body shape, measurements, and proportions in seconds.",
     step: "02",
-  },
-  {
-    icon: Shirt,
-    title: "Virtual Try-On",
-    description: "See exactly how any outfit will look on you with photorealistic AI-generated previews.",
-    step: "03",
-  },
-  {
     icon: Sparkles,
-    title: "Perfect Recommendations",
-    description: "Get personalized size suggestions and style recommendations tailored to your body and preferences.",
+    title: "Check Your Fit & Try On",
+    subtitle: "Confidence before you buy",
+    description:
+      "Use your saved body measurements for instant size guidance and preview outfits with our AI Virtual Try-On before adding to your bag.",
+    highlights: ["Personalized size recommendations", "Realistic virtual outfit previews"],
+  },
+  {
+    step: "03",
+    icon: ShoppingBag,
+    title: "Place Your Order",
+    subtitle: "Fast, transparent checkout",
+    description:
+      "Review your bag, select a saved delivery address, and confirm your order in just a few clicks with clear pricing and instant confirmation.",
+    highlights: ["Saved address book support", "Instant order confirmation"],
+  },
+  {
     step: "04",
+    icon: Truck,
+    title: "Track to Your Doorstep",
+    subtitle: "Live order milestones",
+    description:
+      "Follow every stage from packing and dispatch to out-for-delivery in your profile dashboard, with easy cancellation before shipment.",
+    highlights: ["Step-by-step live tracking", "Hassle-free order management"],
   },
 ];
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-card">
+    <section id="how-it-works" className="py-20 md:py-28 bg-card border-y border-border/60">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
-          <span className="text-accent font-medium text-sm uppercase tracking-wider">How It Works</span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium mt-4 mb-6">
-            Four Steps to Your Perfect Fit
+        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-20">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-medium text-xs uppercase tracking-wider">
+            How It Works
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium mt-4 mb-5">
+            From Discovery to Doorstep in Four Simple Steps
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Our revolutionary AI technology makes finding your perfect size and style effortless.
+          <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+            Shopping online shouldn’t feel like guesswork. FitKart guides you from finding the
+            right style and verifying your fit to tracking your delivery in real time.
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="group relative"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Connection Line */}
-              {index < features.length - 1 && (
-                <div className="hidden lg:block absolute top-16 left-full w-full h-px bg-border z-0">
-                  <ArrowRight className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                </div>
-              )}
+        {/* Sequential Steps Grid */}
+        <div className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Desktop horizontal connector */}
+          <div
+            aria-hidden="true"
+            className="hidden lg:block absolute top-14 left-[12%] right-[12%] h-px bg-gradient-to-r from-border via-accent/40 to-border z-0"
+          />
 
-              <div className="relative bg-background rounded-2xl p-8 shadow-elegant hover-lift h-full">
-                {/* Step Number */}
-                <span className="absolute top-4 right-4 font-display text-4xl font-bold text-muted/50">
-                  {feature.step}
-                </span>
-
-                {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-                  <feature.icon className="h-7 w-7 text-accent" />
+          {steps.map((item) => (
+            <div key={item.step} className="group relative z-10 flex flex-col">
+              <div className="relative bg-background rounded-2xl p-7 border border-border/80 shadow-elegant hover-lift h-full flex flex-col">
+                {/* Top Row: Icon + Step Pill */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-13 h-13 p-3.5 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
+                    <item.icon className="h-6 w-6 text-accent group-hover:text-accent-foreground transition-colors duration-300" />
+                  </div>
+                  <span className="font-display text-2xl font-semibold text-muted-foreground/40 group-hover:text-accent/70 transition-colors">
+                    {item.step}
+                  </span>
                 </div>
 
                 {/* Content */}
-                <h3 className="font-display text-xl font-medium mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground">
-                  {feature.description}
+                <p className="text-xs font-medium uppercase tracking-wider text-accent mb-1">
+                  {item.subtitle}
                 </p>
+                <h3 className="font-display text-xl font-medium mb-3">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+                  {item.description}
+                </p>
+
+                {/* Step Highlights */}
+                <ul className="space-y-2 pt-4 border-t border-border/70">
+                  {item.highlights.map((highlight) => (
+                    <li
+                      key={highlight}
+                      className="flex items-center gap-2 text-xs text-muted-foreground"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5 text-accent shrink-0" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-14 text-center flex flex-wrap items-center justify-center gap-4">
+          <Button variant="gold" size="lg" asChild>
+            <Link to="/shop">
+              Start Browsing
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/try-on">Try Virtual Try-On</Link>
+          </Button>
         </div>
       </div>
     </section>

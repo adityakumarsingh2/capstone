@@ -12,6 +12,7 @@ import {
   TrendingUp, AlertTriangle, CheckCircle, XCircle, Search, ToggleLeft, ToggleRight, ChevronRight
 } from "lucide-react";
 import { toast } from "sonner";
+import OrderManagement from "@/components/admin/OrderManagement";
 
 type Tab = 'overview' | 'orders' | 'products' | 'customers' | 'inventory';
 
@@ -33,7 +34,6 @@ const AdminDashboard = () => {
   const [inventory, setInventory] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [orderStatusUpdate, setOrderStatusUpdate] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'admin')) {
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
           const { data } = await api.get('/admin/stats');
           setStats(data.stats);
         } else if (tab === 'orders') {
-          const { data } = await api.get('/orders', { params: { limit: 50 } });
+          const { data } = await api.get('/orders', { params: { limit: 100 } });
           setOrders(data.orders);
         } else if (tab === 'customers') {
           const { data } = await api.get('/admin/customers', { params: { limit: 50 } });
@@ -67,17 +67,9 @@ const AdminDashboard = () => {
     load();
   }, [tab, user]);
 
-  const handleUpdateStatus = async (orderId: string) => {
-    const newStatus = orderStatusUpdate[orderId];
-    if (!newStatus) return;
-    try {
-      await api.put(`/orders/${orderId}/status`, { status: newStatus });
-      const { data } = await api.get('/orders', { params: { limit: 50 } });
-      setOrders(data.orders);
-      toast.success('Order status updated');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Failed to update status');
-    }
+  const refreshOrders = async () => {
+    const { data } = await api.get('/orders', { params: { limit: 100 } });
+    setOrders(data.orders);
   };
 
   const handleToggleBlock = async (customerId: string) => {
@@ -89,8 +81,6 @@ const AdminDashboard = () => {
       toast.error(err.response?.data?.message || 'Failed to update customer');
     }
   };
-
-  const ORDER_STATUSES = ['ORDER_PLACED', 'PROCESSING', 'SHIPPED', 'ARRIVED_NEAR_AREA', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED', 'DELIVERY_FAILED', 'RETURN_REQUESTED', 'RETURNED'];
 
   if (loading || (!user && !loading)) {
     return <div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
@@ -197,35 +187,7 @@ const AdminDashboard = () => {
 
             {/* ORDERS */}
             {tab === 'orders' && (
-              <div className="space-y-4">
-                <h1 className="font-display text-2xl font-semibold">All Orders</h1>
-                <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input className="pl-9" placeholder="Search by order number..." value={search} onChange={e => setSearch(e.target.value)} /></div>
-                <div className="bg-card border border-border rounded-xl overflow-hidden">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-border bg-muted/50">{['Order #', 'Customer', 'Total', 'Status', 'Date', 'Update Status'].map(h => <th key={h} className="text-left px-4 py-3 font-medium text-muted-foreground">{h}</th>)}</tr></thead>
-                    <tbody>
-                      {orders.filter(o => !search || o.orderNumber.toLowerCase().includes(search.toLowerCase())).map(order => (
-                        <tr key={order._id} className="border-b border-border hover:bg-muted/30 transition-colors">
-                          <td className="px-4 py-3 font-medium">{order.orderNumber}</td>
-                          <td className="px-4 py-3 text-muted-foreground">{order.userId?.email || 'N/A'}</td>
-                          <td className="px-4 py-3">{formatPrice(order.totalAmount)}</td>
-                          <td className="px-4 py-3"><Badge variant={statusBadge(order.status)}>{formatStatus(order.status)}</Badge></td>
-                          <td className="px-4 py-3 text-muted-foreground">{format(new Date(order.createdAt), 'MMM dd, yyyy')}</td>
-                          <td className="px-4 py-3">
-                            <div className="flex gap-2">
-                              <select className="text-xs border border-border rounded px-2 py-1 bg-background" value={orderStatusUpdate[order._id] || ''} onChange={e => setOrderStatusUpdate(prev => ({...prev, [order._id]: e.target.value}))}>
-                                <option value="">Select status</option>
-                                {ORDER_STATUSES.map(s => <option key={s} value={s}>{formatStatus(s)}</option>)}
-                              </select>
-                              <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(order._id)}>Update</Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <OrderManagement orders={orders} onRefresh={refreshOrders} />
             )}
 
             {/* PRODUCTS */}

@@ -7,9 +7,11 @@ export interface Profile {
   _id: string;
   email: string;
   fullName: string | null;
+  phone?: string | null;
   avatarUrl: string | null;
   stylePreferences: string[] | null;
   bodyMeasurements: BodyMeasurements | null;
+  preferences?: UserPreferences | null;
   role: string;
   createdAt: string;
   updatedAt: string;
@@ -18,13 +20,28 @@ export interface Profile {
 export interface BodyMeasurements {
   weight?: number;
   height?: number;
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  shoulders?: number;
+  inseam?: number;
+  fitPreference?: 'slim' | 'regular' | 'relaxed' | 'oversized';
+}
+
+export interface UserPreferences {
+  emailNotifications?: boolean;
+  orderUpdates?: boolean;
+  promotionalEmails?: boolean;
+  measurementUnit?: 'metric' | 'imperial';
 }
 
 interface ProfileUpdate {
   fullName?: string;
+  phone?: string;
   avatarUrl?: string;
   stylePreferences?: string[];
   bodyMeasurements?: BodyMeasurements;
+  preferences?: UserPreferences;
 }
 
 export const useProfile = () => {

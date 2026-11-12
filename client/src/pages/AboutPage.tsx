@@ -1,154 +1,223 @@
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Sparkles, Target, Users, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sparkles,
+  Ruler,
+  ShieldCheck,
+  Truck,
+  HeartHandshake,
+  Leaf,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
+
+const pillars = [
+  {
+    icon: Sparkles,
+    title: "AI Virtual Try-On",
+    description:
+      "Preview garments on your own proportions before placing an order, turning online browsing into a confident fitting-room experience.",
+  },
+  {
+    icon: Ruler,
+    title: "Measurement-Driven Fit",
+    description:
+      "Save your height, weight, and detailed body measurements once to receive tailored size recommendations across our catalog.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Curated Quality",
+    description:
+      "Every piece in our collection is selected for fabric durability, clean tailoring, and everyday versatility.",
+  },
+  {
+    icon: Truck,
+    title: "Transparent Fulfillment",
+    description:
+      "From order confirmation to doorstep arrival, follow every milestone in real time with clear status updates and easy order management.",
+  },
+];
+
+const commitments = [
+  {
+    icon: HeartHandshake,
+    title: "Customer-First Shopping",
+    description:
+      "Clear pricing, saved address management, and straightforward order cancellation before dispatch put you in complete control.",
+  },
+  {
+    icon: Leaf,
+    title: "Fewer Returns, Less Waste",
+    description:
+      "Better fit guidance before checkout means fewer sizing mismatches, fewer unnecessary return shipments, and a lighter environmental footprint.",
+  },
+];
 
 const AboutPage = () => {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       <Navbar />
-      
-      <div className="pt-24 md:pt-28">
-        {/* Hero */}
-        <section className="py-16 md:py-24 bg-gradient-subtle">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium mb-6">
-              Redefining How the World
-              <br />
-              <span className="italic text-accent">Shops for Fashion</span>
-            </h1>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto">
-              We believe everyone deserves to feel confident in their clothing choices. 
-              Our AI technology makes that possible by eliminating the guesswork from online shopping.
-            </p>
+
+      <div className="pt-20 md:pt-24">
+        {/* Hero Section */}
+        <section className="py-16 md:py-24 bg-gradient-subtle border-b border-border/60">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent font-medium text-xs uppercase tracking-wider mb-5">
+                About FitKart
+              </span>
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6">
+                Fashion Built Around{" "}
+                <span className="italic text-accent">Your Exact Fit</span>
+              </h1>
+              <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+                FitKart combines curated apparel, intelligent body-measurement guidance, and
+                virtual try-on technology so you can shop online with certainty—and receive
+                every order smoothly at your doorstep.
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* Mission */}
+        {/* Purpose & Vision */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <div>
-                <span className="text-accent font-medium text-sm uppercase tracking-wider">Our Mission</span>
-                <h2 className="font-display text-3xl md:text-4xl font-medium mt-4 mb-6">
-                  Making Perfect Fit Accessible to Everyone
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              <div className="space-y-6">
+                <span className="text-accent font-medium text-xs uppercase tracking-wider">
+                  Our Purpose & Vision
+                </span>
+                <h2 className="font-display text-3xl md:text-4xl font-medium leading-tight">
+                  Removing the Guesswork from Online Apparel Shopping
                 </h2>
-                <p className="text-muted-foreground text-lg mb-6">
-                  Founded in 2024, Outfit AI emerged from a simple frustration: why is it so hard to 
-                  find clothes that fit when shopping online? We set out to solve this problem using 
-                  cutting-edge artificial intelligence.
+                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+                  Online shopping offers endless choice, yet sizing charts remain inconsistent
+                  and hard to trust. FitKart was built to bridge that gap—giving shoppers
+                  practical tools to visualize outfits and match garments to their real
+                  measurements before they buy.
                 </p>
-                <p className="text-muted-foreground text-lg">
-                  Our technology analyzes body measurements from a single photo and creates realistic 
-                  virtual try-ons, helping shoppers see exactly how clothes will look before they buy. 
-                  This isn't just convenient—it's revolutionary.
+                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+                  Our vision is a wardrobe experience where every order feels intentional:
+                  clear fit insights, seamless checkout with saved preferences, and reliable
+                  end-to-end delivery tracking.
                 </p>
+
+                <div className="grid sm:grid-cols-2 gap-3 pt-2">
+                  {[
+                    "Personalized size profiles",
+                    "Interactive virtual try-on",
+                    "Saved addresses & fast checkout",
+                    "Real-time order milestone tracking",
+                  ].map((point) => (
+                    <div key={point} className="flex items-center gap-2.5 text-sm font-medium">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                      <span>{point}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
+
               <div className="relative">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-card">
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border shadow-elegant">
                   <img
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop"
-                    alt="Fashion studio"
+                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&auto=format&fit=crop"
+                    alt="FitKart curated fashion studio"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-6 bg-background rounded-xl shadow-elegant p-6 max-w-xs">
-                  <p className="font-display text-4xl font-bold text-accent mb-2">70%</p>
-                  <p className="text-muted-foreground">Reduction in return rates for our partner brands</p>
+                <div className="mt-4 sm:mt-0 sm:absolute sm:-bottom-6 sm:-left-6 bg-background border border-border rounded-xl shadow-elegant p-5 max-w-xs">
+                  <p className="font-display text-2xl font-semibold text-accent mb-1">
+                    Fit-First Design
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Every feature—from body measurement profiles to live order tracking—is
+                    crafted for clarity and confidence.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Values */}
-        <section className="py-16 md:py-24 bg-card">
+        {/* Key Features & Benefits */}
+        <section className="py-16 md:py-24 bg-card border-y border-border/60">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-accent font-medium text-sm uppercase tracking-wider">Our Values</span>
-              <h2 className="font-display text-3xl md:text-4xl font-medium mt-4 mb-6">
-                What Drives Us Forward
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="text-accent font-medium text-xs uppercase tracking-wider">
+                Why FitKart
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-medium mt-3 mb-4">
+                Designed for Every Step of Your Journey
               </h2>
+              <p className="text-muted-foreground">
+                From discovering your next favorite outfit to managing deliveries from your
+                profile dashboard.
+              </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                {
-                  icon: Sparkles,
-                  title: "Innovation First",
-                  description: "We push the boundaries of what's possible with AI and fashion technology.",
-                },
-                {
-                  icon: Users,
-                  title: "Inclusive by Design",
-                  description: "Our technology works for all body types, sizes, ages, and genders.",
-                },
-                {
-                  icon: Target,
-                  title: "Accuracy Obsessed",
-                  description: "We won't rest until our size predictions are 100% accurate.",
-                },
-                {
-                  icon: Leaf,
-                  title: "Sustainability Focused",
-                  description: "By reducing returns, we're helping reduce fashion's environmental impact.",
-                },
-              ].map((value) => (
-                <div key={value.title} className="bg-background rounded-xl p-8 hover-lift">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
-                    <value.icon className="h-6 w-6 text-accent" />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {pillars.map((item) => (
+                <div
+                  key={item.title}
+                  className="bg-background rounded-2xl p-7 border border-border/80 hover-lift flex flex-col"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                    <item.icon className="h-6 w-6 text-accent" />
                   </div>
-                  <h3 className="font-display text-xl font-medium mb-3">{value.title}</h3>
-                  <p className="text-muted-foreground">{value.description}</p>
+                  <h3 className="font-display text-xl font-medium mb-2.5">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Team */}
+        {/* Customer Commitment */}
         <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-accent font-medium text-sm uppercase tracking-wider">Our Team</span>
-              <h2 className="font-display text-3xl md:text-4xl font-medium mt-4 mb-6">
-                The Minds Behind the Magic
-              </h2>
-              <p className="text-muted-foreground text-lg">
-                A diverse team of AI researchers, fashion experts, and engineers united by 
-                a passion for solving real problems.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              {[
-                {
-                  name: "Sarah Chen",
-                  role: "CEO & Co-Founder",
-                  image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop",
-                },
-                {
-                  name: "Marcus Johnson",
-                  role: "CTO & Co-Founder",
-                  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop",
-                },
-                {
-                  name: "Elena Rodriguez",
-                  role: "Head of AI",
-                  image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop",
-                },
-              ].map((member) => (
-                <div key={member.name} className="text-center group">
-                  <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-muted">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="grid md:grid-cols-2 gap-8">
+              {commitments.map((item) => (
+                <div
+                  key={item.title}
+                  className="bg-card rounded-2xl p-8 border border-border flex items-start gap-5"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                    <item.icon className="h-6 w-6 text-accent" />
                   </div>
-                  <h3 className="font-display text-xl font-medium">{member.name}</h3>
-                  <p className="text-muted-foreground">{member.role}</p>
+                  <div>
+                    <h3 className="font-display text-xl font-medium mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               ))}
+            </div>
+
+            {/* CTA Banner */}
+            <div className="mt-14 rounded-2xl bg-card border border-border p-8 md:p-12 text-center">
+              <h2 className="font-display text-2xl md:text-3xl font-medium mb-3">
+                Ready to Experience Better-Fitting Fashion?
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto mb-7">
+                Browse our latest collection, set up your body measurements in your profile, or
+                test out the AI Virtual Try-On studio.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button variant="gold" size="lg" asChild>
+                  <Link to="/shop">
+                    Explore Shop
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild>
+                  <Link to="/try-on">Launch Virtual Try-On</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
