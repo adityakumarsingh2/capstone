@@ -70,7 +70,7 @@ const AuthPage = () => {
             toast.error(error.message);
           }
         } else {
-          toast.success('Account created successfully! Welcome to Outfit AI.');
+          toast.success('Account created successfully! Welcome to Fitkart.');
           navigate('/');
         }
       } else {

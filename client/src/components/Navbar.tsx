@@ -43,7 +43,7 @@ const Navbar = () => {
               <Sparkles className="h-6 w-6 text-accent transition-transform duration-300 group-hover:rotate-12" />
             </div>
             <span className="font-display text-xl md:text-2xl font-semibold tracking-tight">
-              Outfit<span className="text-accent">AI</span>
+              Fit<span className="text-accent">kart</span>
             </span>
           </Link>
 

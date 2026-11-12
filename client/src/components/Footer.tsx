@@ -44,7 +44,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <Sparkles className="h-6 w-6 text-accent" />
               <span className="font-display text-2xl font-semibold">
-                Outfit<span className="text-accent">AI</span>
+                Fit<span className="text-accent">kart</span>
               </span>
             </Link>
             <p className="text-primary-foreground/70 text-sm mb-6 max-w-xs">
@@ -93,7 +93,7 @@ const Footer = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-            <p>© 2024 Outfit AI. All rights reserved.</p>
+            <p>© 2026 Fitkart. All rights reserved.</p>
             <p>Made with AI, designed for humans.</p>
           </div>
         </div>
