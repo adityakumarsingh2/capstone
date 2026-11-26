@@ -144,24 +144,24 @@ const ProductCard = ({
     "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600";
 
   return (
-    <div className="group relative bg-card rounded-2xl border border-border/70 overflow-hidden shadow-sm hover:shadow-elegant hover:border-accent/40 transition-all duration-300 flex flex-col h-full">
+    <div className="group relative bg-card rounded-2xl border border-border/50 overflow-hidden shadow-card hover:shadow-elegant hover:border-accent/35 transition-all duration-350 flex flex-col h-full">
       {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted/40">
         <img
           src={imageUrl}
           alt={product.name}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
         />
 
         {/* Subtle Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
 
         {/* Top-left Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           <Badge
             variant="secondary"
-            className="bg-background/85 backdrop-blur-md text-foreground text-[11px] capitalize font-medium border-0 shadow-sm"
+            className="bg-background/88 backdrop-blur-sm text-foreground text-[10px] capitalize font-semibold border-0 shadow-sm uppercase tracking-wide px-2"
           >
             {product.category}
           </Badge>
@@ -178,18 +178,18 @@ const ProductCard = ({
         </div>
 
         {/* Top-right Quick Actions */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2">
+        <div className="absolute top-3 right-3 flex flex-col gap-1.5">
           <button
             onClick={handleWishlistClick}
             title={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
             className={cn(
-              "w-9 h-9 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 shadow-md",
+              "w-8 h-8 rounded-full backdrop-blur-sm flex items-center justify-center transition-all duration-200 shadow-md border",
               inWishlist
-                ? "bg-accent text-accent-foreground"
-                : "bg-background/85 hover:bg-background text-foreground"
+                ? "bg-accent text-accent-foreground border-accent/50"
+                : "bg-background/88 hover:bg-background text-muted-foreground hover:text-foreground border-border/40"
             )}
           >
-            <Heart className={cn("h-4 w-4", inWishlist && "fill-current")} />
+            <Heart className={cn("h-3.5 w-3.5", inWishlist && "fill-current")} />
           </button>
           {onQuickView && (
             <button
@@ -198,19 +198,19 @@ const ProductCard = ({
                 onQuickView(product);
               }}
               title="Quick View"
-              className="w-9 h-9 rounded-full bg-background/85 backdrop-blur-md flex items-center justify-center hover:bg-background transition-all duration-200 shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+              className="w-8 h-8 rounded-full bg-background/88 backdrop-blur-sm border border-border/40 flex items-center justify-center hover:bg-background transition-all duration-200 shadow-md opacity-0 group-hover:opacity-100"
             >
-              <Eye className="h-4 w-4 text-foreground" />
+              <Eye className="h-3.5 w-3.5 text-foreground" />
             </button>
           )}
         </div>
       </div>
 
       {/* Product Info + Actions */}
-      <div className="p-4 flex flex-col flex-1 justify-between gap-3">
+      <div className="p-3.5 md:p-4 flex flex-col flex-1 justify-between gap-3">
         <div className="space-y-1.5">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] text-muted-foreground uppercase tracking-widest truncate">
+            <p className="text-[11px] text-accent uppercase tracking-widest font-semibold truncate">
               {product.brand || "FitKart"}
             </p>
             {showRating && effectiveRating > 0 && (
@@ -222,7 +222,7 @@ const ProductCard = ({
             )}
           </div>
 
-          <h3 className="font-display font-medium text-base text-foreground group-hover:text-accent transition-colors line-clamp-1">
+          <h3 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-1 leading-snug">
             {product.name}
           </h3>
 
@@ -280,22 +280,22 @@ const ProductCard = ({
         </div>
 
         {/* Action Buttons: Add to Cart + AI Try-On */}
-        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/60">
+        <div className="grid grid-cols-2 gap-1.5 pt-2.5 border-t border-border/50">
           <Button
             size="sm"
             variant="default"
             disabled={isOutOfStock || addToCart.isPending}
             onClick={handleAddToCartClick}
-            className="w-full text-xs font-medium px-2"
+            className="w-full text-xs font-semibold px-2 h-8 rounded-lg"
           >
             {justAdded ? (
               <>
-                <Check className="h-3.5 w-3.5 mr-1" />
-                Added
+                <Check className="h-3 w-3 mr-1" />
+                Added!
               </>
             ) : (
               <>
-                <ShoppingBag className="h-3.5 w-3.5 mr-1" />
+                <ShoppingBag className="h-3 w-3 mr-1" />
                 {isOutOfStock ? "Sold Out" : "Add to Cart"}
               </>
             )}
@@ -304,10 +304,10 @@ const ProductCard = ({
             size="sm"
             variant="gold"
             onClick={handleTryOn}
-            className="w-full text-xs font-medium px-2"
+            className="w-full text-xs font-semibold px-2 h-8 rounded-lg shadow-sm"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
-            AI Try-On
+            <Sparkles className="h-3 w-3 mr-1" />
+            Try-On
           </Button>
         </div>
       </div>

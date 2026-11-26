@@ -1,6 +1,7 @@
-import { Heart, ShoppingBag } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Heart, ShoppingBag, ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/formatCurrency";
 
 interface Product {
@@ -21,7 +22,7 @@ const products: Product[] = [
     brand: "Modern Classics",
     price: 3499,
     originalPrice: 4499,
-    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=700&auto=format&fit=crop",
     category: "Outerwear",
     isNew: true,
   },
@@ -30,7 +31,7 @@ const products: Product[] = [
     name: "Silk Evening Dress",
     brand: "Elegance",
     price: 4599,
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700&auto=format&fit=crop",
     category: "Dresses",
   },
   {
@@ -38,7 +39,7 @@ const products: Product[] = [
     name: "Premium Cotton Shirt",
     brand: "Essential",
     price: 1299,
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=700&auto=format&fit=crop",
     category: "Tops",
     isNew: true,
   },
@@ -48,7 +49,7 @@ const products: Product[] = [
     brand: "Modern Classics",
     price: 1899,
     originalPrice: 2499,
-    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=700&auto=format&fit=crop",
     category: "Bottoms",
   },
   {
@@ -56,75 +57,88 @@ const products: Product[] = [
     name: "Cashmere Sweater",
     brand: "Luxe Knit",
     price: 3499,
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=700&auto=format&fit=crop",
     category: "Knitwear",
   },
   {
     id: 6,
-    name: "Leather Midi Skirt",
-    brand: "Edge",
+    name: "Linen Summer Blazer",
+    brand: "FitKart Atelier",
     price: 2799,
-    image: "https://images.unsplash.com/photo-1583496661160-fb5886a0uj7a?w=600&auto=format&fit=crop",
-    category: "Bottoms",
+    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=700&auto=format&fit=crop",
+    category: "Outerwear",
     isNew: true,
   },
 ];
 
-const ProductCard = ({ product }: { product: Product }) => {
+const FeaturedProductCard = ({ product }: { product: Product }) => {
+  const discount = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : null;
+
   return (
-    <div className="group relative">
-      {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-muted mb-4">
+    <div className="group relative bg-card rounded-2xl border border-border/60 overflow-hidden shadow-card hover:shadow-elegant hover:border-accent/30 transition-all duration-400 flex flex-col">
+      {/* Image */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted/40">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
         />
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
-        
-        {/* Quick Actions */}
-        <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button className="w-10 h-10 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors shadow-md">
-            <Heart className="h-5 w-5 text-foreground" />
-          </button>
-        </div>
 
-        {/* Try On Button */}
-        <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-          <Button variant="gold" className="w-full">
-            Virtual Try-On
-          </Button>
-        </div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
 
         {/* Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {product.isNew && (
-            <span className="px-3 py-1 bg-accent text-accent-foreground text-xs font-medium rounded-full">
+            <Badge className="bg-accent text-accent-foreground text-[10px] font-semibold uppercase tracking-wide px-2.5">
               New
-            </span>
+            </Badge>
           )}
-          {product.originalPrice && (
-            <span className="px-3 py-1 bg-destructive text-destructive-foreground text-xs font-medium rounded-full">
-              Sale
-            </span>
+          {discount && (
+            <Badge variant="destructive" className="text-[10px] font-semibold">
+              -{discount}%
+            </Badge>
           )}
+        </div>
+
+        {/* Wishlist button */}
+        <button className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/85 backdrop-blur-sm border border-border/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background hover:border-accent/40 hover:scale-110">
+          <Heart className="h-3.5 w-3.5 text-muted-foreground hover:text-accent transition-colors" />
+        </button>
+
+        {/* CTA overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300">
+          <Button variant="gold" size="sm" className="flex-1 gap-1.5 shadow-sm text-xs font-semibold">
+            <ShoppingBag className="h-3.5 w-3.5" />
+            Add to Cart
+          </Button>
+          <Link to="/shop">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-8 w-8 bg-background/90 hover:bg-background border border-border/40 shrink-0"
+            >
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
         </div>
       </div>
 
-      {/* Product Info */}
-      <div>
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+      {/* Info */}
+      <div className="p-4">
+        <p className="text-[11px] text-accent uppercase tracking-widest font-semibold mb-1">
           {product.brand}
         </p>
-        <h3 className="font-medium mb-2 group-hover:text-accent transition-colors">
+        <h3 className="font-medium text-sm leading-snug mb-2.5 group-hover:text-accent transition-colors line-clamp-1">
           {product.name}
         </h3>
         <div className="flex items-center gap-2">
-          <span className="font-semibold">{formatPrice(product.price)}</span>
+          <span className="font-bold text-base">{formatPrice(product.price)}</span>
           {product.originalPrice && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-xs text-muted-foreground line-through">
               {formatPrice(product.originalPrice)}
             </span>
           )}
@@ -136,27 +150,36 @@ const ProductCard = ({ product }: { product: Product }) => {
 
 const FeaturedProducts = () => {
   return (
-    <section className="py-20 md:py-32">
+    <section className="py-20 md:py-28 bg-gradient-subtle">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-14">
           <div>
-            <span className="text-accent font-medium text-sm uppercase tracking-wider">Curated For You</span>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium mt-4">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="section-divider" />
+              <span className="text-accent font-semibold text-xs uppercase tracking-widest">
+                Curated For You
+              </span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium">
               Featured Collection
             </h2>
           </div>
           <Link to="/shop">
-            <Button variant="minimal" className="text-base">
+            <Button
+              variant="outline"
+              className="gap-2 border-border hover:border-accent/50 hover:bg-accent/5 group text-sm"
+            >
               View All Products
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Button>
           </Link>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+        {/* Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <FeaturedProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
